@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./styles/semana.css">
+  <title>Horário Semanal</title>
+</head>
+<body>
+
+ <div class="sidebar">
+  <button onclick="window.location.href='index.html'">Horários</button>
+  <button onclick="window.location.href='semana.html'">Horário semanal</button>
+  <button onclick="window.location.href='eventos.html'">Eventos</button>
+  <button onclick="window.location.href='mudanca.html'">Mudança de horário</button>
+  <button onclick="window.location.href='reunioes.html'">Reuniões</button>
+  <button onclick="window.location.href='conselho.html'">Conselhos de classe</button>
+  <button onclick="window.location.href='grade.html'">Grade</button>
+</div>
+
+
+  <div class="main">
+    <h1>Horário Semanal de Aulas</h1>
+
+    <div class="tabela-semanal" id="tabelaSemanal">
+      <div class="celula header">Horário</div>
+      <div class="celula header">Segunda</div>
+      <div class="celula header">Terça</div>
+      <div class="celula header">Quarta</div>
+      <div class="celula header">Quinta</div>
+      <div class="celula header">Sexta</div>
+
+      <!-- 8 Aulas x 5 Dias -->
+ <script>
+  const aulas = ["Português", "Matemática", "História", "Geografia", "Inglês", "Ciências", "Artes", "Ed. Física"];
+  const dias = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta"];
+
+  const coresMateria = {
+    "Português": "#FFDD99",
+    "Matemática": "#FF9999",    // Vermelho
+    "História": "#99CCFF",      // Azul claro
+    "Geografia": "#C1E1C1",     // Verde claro
+    "Inglês": "#DDA0DD",        // Roxo claro
+    "Ciências": "#A0E7E5",      // Ciano claro
+    "Artes": "#FFD700",         // Amarelo ouro
+    "Ed. Física": "#98FB98"     // Verde primavera
+  };
+
+  for (let aula = 1; aula <= 8; aula++) {
+    document.write(`<div class="celula header">${aula}ª Aula</div>`);
+    for (let dia = 0; dia < 5; dia++) {
+      const id = `obs_${dia}_${aula}`;
+      const aulaNome = aulas[(aula + dia) % aulas.length];
+      const cor = coresMateria[aulaNome] || "#eee";
+
+      document.write(`<div class="celula" style="background-color: ${cor};" onclick="abrirObservacao('${id}', '${aulaNome}', '${dias[dia]}', '${aula}ª Aula')">${aulaNome}</div>`);
+    }
+  }
+</script>
+
+    </div>
+
+    <div class="observacao-box hidden" id="observacaoBox">
+      <h3 id="tituloAula"></h3>
+      <textarea id="textoObservacao" placeholder="Digite a observação..."></textarea>
+      <button class="salvar" onclick="salvarObservacao()">Salvar</button>
+      <button class="salvar" onclick="fecharObservacao()">Fechar</button>
+    </div>
+  </div>
+
+  <script>
+    let aulaAtualId = '';
+
+    function abrirObservacao(id, aulaNome, dia, aulaHorario) {
+      aulaAtualId = id;
+      document.getElementById('tituloAula').innerText = `${dia} - ${aulaHorario} (${aulaNome})`;
+
+      const obsSalva = localStorage.getItem(id);
+      document.getElementById('textoObservacao').value = obsSalva ? obsSalva : '';
+
+      document.getElementById('observacaoBox').classList.remove('hidden');
+    }
+
+    function salvarObservacao() {
+      const texto = document.getElementById('textoObservacao').value;
+      localStorage.setItem(aulaAtualId, texto);
+      alert('Observação salva!');
+      fecharObservacao();
+    }
+
+    function fecharObservacao() {
+      document.getElementById('observacaoBox').classList.add('hidden');
+    }
+  </script>
+
+</body>
+</html>
