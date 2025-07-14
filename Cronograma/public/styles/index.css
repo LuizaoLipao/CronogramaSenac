@@ -1,0 +1,109 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  display: flex;
+  height: 100vh;
+  background: #eaf6fb;
+}
+
+.sidebar {
+  width: 250px;
+  background: linear-gradient(180deg, #0074f0 80%, #94e4ff 100%);
+  padding: 20px;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+.sidebar button {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 15px;
+  background: #ffffff;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: left;
+  border-radius: 8px;
+  transition: background 0.3s, color 0.3s;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.sidebar button:hover {
+  background: #003366;
+  color: #fff;
+}
+
+.main {
+  flex: 1;
+  background: #f8fbfd;
+  padding: 30px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.main h1 {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #0074f0;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.month-box {
+  background: #94e4ff;
+  padding: 24px 18px 28px 18px;
+  margin-bottom: 32px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 116, 240, 0.07);
+  border: 1px solid #e0f2fa;
+}
+
+.month-title {
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 18px;
+  color: #003366;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 0 #fff, 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 7px;
+  text-align: center;
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+.calendar div {
+  padding: 12px 0;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 116, 240, 0.03);
+  transition: background 0.2s, color 0.2s;
+}
+
+.open-day {
+  background: #ffffff;
+  cursor: pointer;
+  border: 1px solid #848484;
+}
+
+.calendar .header {
+  font-weight: bold;
+  background: #0074f0;
+  color: #fff;
+  border: none;
+  box-shadow: none;
+  letter-spacing: 1px;
+  padding: 10px 0;
+  border-radius: 6px 6px 0 0;
+}
+
+.off-day {
+  background-color: gray;
+  cursor: auto;
+  border: 1px solid black;
+}

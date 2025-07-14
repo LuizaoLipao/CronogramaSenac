@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./styles/index.css">
+  <title>Calendário Completo</title>
+</head>
+<body>
+  <div class="sidebar">
+  <button onclick="window.location.href='index.html'">Horários</button>
+  <button onclick="window.location.href='semana.html'">Horário semanal</button>
+  <button onclick="window.location.href='eventos.html'">Eventos</button>
+  <button onclick="window.location.href='mudanca.html'">Mudança de horário</button>
+  <button onclick="window.location.href='reunioes.html'">Reuniões</button>
+  <button onclick="window.location.href='conselho.html'">Conselhos de classe</button>
+  <button onclick="window.location.href='grade.html'">Grade</button>
+</div>
+
+  <div class="main">
+    <h1>Horários</h1>
+    <section class="month-box" id="month-box">
+</section>
+  </div>
+    <script>
+        const eventDays = [5, 12, 19];
+        const [showEvents, setShowEvents] = useState(false);
+
+    </script>
+    <script src="./controllers/indexController.js"></script>
+</body>
+</html>
