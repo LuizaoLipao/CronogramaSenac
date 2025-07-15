@@ -12,7 +12,9 @@ body {
   padding: 30px;
   box-sizing: border-box;
   overflow-y: auto;
+  align-items: center;
 }
+
 
 .main h1 {
   text-align: center;
@@ -78,4 +80,9 @@ body {
   background-color: gray;
   cursor: auto;
   border: 1px solid black;
+}
+
+ul{
+  overflow-y: scroll;
+  max-height: 150px;
 }
