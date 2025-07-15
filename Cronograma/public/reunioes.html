@@ -4,34 +4,61 @@
   <meta charset="UTF-8">
   <title>Reuniões</title>
   <link rel="stylesheet" href="styles/index.css">
+  <link rel="stylesheet" href="/Cronograma/public/styles/sidebarStyle.css">
 </head>
 <body>
 
-<div class="sidebar">
-  <button onclick="window.location.href='index.html'">Horários</button>
-  <button onclick="window.location.href='semana.html'">Horário semanal</button>
-  <button onclick="window.location.href='eventos.html'">Eventos</button>
-  <button onclick="window.location.href='mudanca.html'">Mudança de horário</button>
-  <button onclick="window.location.href='reunioes.html'">Reuniões</button>
-  <button onclick="window.location.href='conselho.html'">Conselhos de classe</button>
-  <button onclick="window.location.href='grade.html'">Grade</button>
-</div>
+<script src="/Cronograma/public/controllers/sidebarController.js"></script>
 
 <div class="main">
   <h1>Reuniões</h1>
 
-  <ul>
-    <li><strong>05/07 - 14:00:</strong> Reunião com pais da turma 6º ano</li>
-    <li><strong>12/07 - 09:00:</strong> Reunião pedagógica com professores</li>
-  </ul>
+  <ul id="meetList"></ul>
 
   <h3>Agendar nova reunião:</h3>
-  <form>
-    <input type="text" placeholder="Assunto da reunião"><br><br>
-    <input type="datetime-local"><br><br>
+  <form id="meet-Form">
+    <input type="text" placeholder="Assunto da reunião" id="about-Meet" required><br><br>
+    <input type="text" placeholder="Professor Requirido" id="teacher-Meet"><br><br>
+    <input type="datetime-local" id="date-Meet" required><br><br>
     <button type="submit">Agendar</button>
   </form>
 </div>
 
 </body>
+
+<script>
+  function renderMeet() {
+    const meetList = document.getElementById("meetList");
+    meetList.innerHTML = "";
+    const meets = JSON.parse(localStorage.getItem("ReunioesEscola") || "[]");
+    meets.forEach(ev => {
+      meetList.innerHTML += `<li><strong>${ev.data}:</strong> ${ev.nome} ${ev.professor ? '- ' + ev.professor : ''}</li>`;
+    });
+  }
+
+  function saveMeet(e) {
+    e.preventDefault();
+    const aboutMeet = document.getElementById("about-Meet").value.trim();
+    const teacherMeet = document.getElementById("teacher-Meet").value.trim();
+    const dateMeet = document.getElementById("date-Meet").value;
+    if (!aboutMeet || !dateMeet) return;
+
+    // Formata data e hora
+    const [data, hora] = dateMeet.split("T");
+    const [ano, mes, dia] = data.split("-");
+    const dataFormatada = `${dia}/${mes} - ${hora.slice(0,5)}`;
+
+    const meets = JSON.parse(localStorage.getItem("ReunioesEscola") || "[]");
+    meets.push({ nome: aboutMeet, professor: teacherMeet, data: dataFormatada });
+    localStorage.setItem("ReunioesEscola", JSON.stringify(meets));
+
+    renderMeet();
+    document.getElementById("meet-Form").reset();
+  }
+
+  document.getElementById("meet-Form").addEventListener("submit", saveMeet);
+
+  renderMeet();
+</script>
+
 </html>

@@ -4,37 +4,69 @@
   <meta charset="UTF-8">
   <title>Conselhos de Classe</title>
   <link rel="stylesheet" href="styles/index.css">
+  <link rel="stylesheet" href="/Cronograma/public/styles/sidebarStyle.css">
 </head>
 <body>
 
-<div class="sidebar">
-  <button onclick="window.location.href='index.html'">Horários</button>
-  <button onclick="window.location.href='semana.html'">Horário semanal</button>
-  <button onclick="window.location.href='eventos.html'">Eventos</button>
-  <button onclick="window.location.href='mudanca.html'">Mudança de horário</button>
-  <button onclick="window.location.href='reunioes.html'">Reuniões</button>
-  <button onclick="window.location.href='conselho.html'">Conselhos de classe</button>
-  <button onclick="window.location.href='grade.html'">Grade</button>
-</div>
+<script src="/Cronograma/public/controllers/sidebarController.js"></script>
 
 <div class="main">
   <h1>Conselhos de Classe</h1>
 
   <p>*Datas para conselhos de classe.*</p>
 
-  <form>
+  <ul id="conselho-list"></ul>
+
+  <form id="conselho-form">
     <label>Turma:</label><br>
-    <input type="text" placeholder="Ex: 7º Ano B"><br><br>
+    <input type="text" placeholder="Ex: 7º Ano B" required id="conselho-turma"><br><br>
 
     <label>Data:</label><br>
-    <input type="date"><br><br>
+    <input type="date" required id="conselho-data"><br><br>
 
     <label>Observações:</label><br>
-    <textarea rows="5" cols="50" placeholder="Descreva os pontos discutidos..."></textarea><br><br>
+    <textarea rows="5" cols="50" placeholder="Descreva os pontos discutidos..." id="conselho-obs"></textarea><br><br>
 
     <button type="submit">Salvar Registro</button>
   </form>
 </div>
+
+<script>
+  function renderConselhos() {
+    const conselhoList = document.getElementById("conselho-list");
+    conselhoList.innerHTML = "";
+    const conselhos = JSON.parse(localStorage.getItem("conselhosClasse") || "[]");
+    conselhos.forEach(c => {
+      conselhoList.innerHTML += `<li>
+        <strong>${c.data}</strong> - <em>${c.turma}</em><br>
+        <span>${c.obs}</span>
+      </li>`;
+    });
+  }
+
+  function saveConselho(e) {
+    e.preventDefault();
+    const turma = document.getElementById("conselho-turma").value.trim();
+    const data = document.getElementById("conselho-data").value;
+    const obs = document.getElementById("conselho-obs").value.trim();
+
+    if (!turma || !data) return;
+
+    const [ano, mes, dia] = data.split("-");
+    const dataFormatada = `${dia}/${mes}/${ano}`;
+
+    const conselhos = JSON.parse(localStorage.getItem("conselhosClasse") || "[]");
+    conselhos.push({ turma, data: dataFormatada, obs });
+    localStorage.setItem("conselhosClasse", JSON.stringify(conselhos));
+
+    renderConselhos();
+    document.getElementById("conselho-form").reset();
+  }
+
+  document.getElementById("conselho-form").addEventListener("submit", saveConselho);
+
+  renderConselhos();
+</script>
 
 </body>
 </html>

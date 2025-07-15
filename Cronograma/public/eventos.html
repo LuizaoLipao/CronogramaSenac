@@ -1,38 +1,63 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <title>Eventos</title>
   <link rel="stylesheet" href="styles/index.css">
+  <link rel="stylesheet" href="/Cronograma/public/styles/sidebarStyle.css">
 </head>
+
 <body>
 
-<div class="sidebar">
-  <button onclick="window.location.href='index.html'">Horários</button>
-  <button onclick="window.location.href='semana.html'">Horário semanal</button>
-  <button onclick="window.location.href='eventos.html'">Eventos</button>
-  <button onclick="window.location.href='mudanca.html'">Mudança de horário</button>
-  <button onclick="window.location.href='reunioes.html'">Reuniões</button>
-  <button onclick="window.location.href='conselho.html'">Conselhos de classe</button>
-  <button onclick="window.location.href='grade.html'">Grade</button>
-</div>
+  <script src="/Cronograma/public/controllers/sidebarController.js"></script>
 
-<div class="main">
-  <h1>Eventos da Escola</h1>
+  <div class="main">
+    <h1>Eventos da Escola</h1>
 
-  <ul>
-    <li><strong>10/07:</strong> Festa Junina</li>
-    <li><strong>20/08:</strong> Feira de Ciências</li>
-    <li><strong>15/09:</strong> Dia da Família na Escola</li>
-  </ul>
+    <ul id="event-List"></ul>
 
-  <h3>Adicionar novo evento:</h3>
-  <form>
-    <input type="text" placeholder="Nome do Evento" required><br><br>
-    <input type="date" required><br><br>
-    <button type="submit">Salvar Evento</button>
-  </form>
-</div>
+    <h3>Adicionar novo evento:</h3>
+    <form id="event-Form">
+      <input type="text" placeholder="Nome do Evento" required id="event-Name"><br><br>
+      <input type="date" required id="event-Date"><br><br>
+      <button type="submit">Salvar Evento</button>
+    </form>
+  </div>
 
 </body>
+
+<script>
+  function renderEvents() {
+    const eventList = document.getElementById("event-List");
+    eventList.innerHTML = "";
+    const eventos = JSON.parse(localStorage.getItem("eventosEscola") || "[]");
+    eventos.forEach(ev => {
+      eventList.innerHTML += `<li><strong>${ev.data}:</strong> ${ev.nome}</li>`;
+    });
+  }
+
+  function saveEvent(e) {
+    e.preventDefault();
+    const eventName = document.getElementById("event-Name").value.trim();
+    const eventDate = document.getElementById("event-Date").value;
+    if (!eventName || !eventDate) return;
+
+    const [ano, mes, dia] = eventDate.split("-");
+    const dataFormatada = `${dia}/${mes}`;
+
+    const eventos = JSON.parse(localStorage.getItem("eventosEscola") || "[]");
+    eventos.push({ nome: eventName, data: dataFormatada });
+    localStorage.setItem("eventosEscola", JSON.stringify(eventos));
+
+    renderEvents();
+    document.getElementById("event-Form").reset();
+  }
+
+  document.getElementById("event-Form").addEventListener("submit", saveEvent);
+
+  // Inicializa lista ao carregar
+  renderEvents();
+</script>
+
 </html>

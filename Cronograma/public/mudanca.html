@@ -4,38 +4,59 @@
   <meta charset="UTF-8">
   <title>Mudança de Horário</title>
   <link rel="stylesheet" href="styles/index.css">
+  <link rel="stylesheet" href="/Cronograma/public/styles/sidebarStyle.css">
 </head>
 <body>
 
-<div class="sidebar">
-  <button onclick="window.location.href='index.html'">Horários</button>
-  <button onclick="window.location.href='semana.html'">Horário semanal</button>
-  <button onclick="window.location.href='eventos.html'">Eventos</button>
-  <button onclick="window.location.href='mudanca.html'">Mudança de horário</button>
-  <button onclick="window.location.href='reunioes.html'">Reuniões</button>
-  <button onclick="window.location.href='conselho.html'">Conselhos de classe</button>
-  <button onclick="window.location.href='grade.html'">Grade</button>
-</div>
+<script src="/Cronograma/public/controllers/sidebarController.js"></script>
 
 <div class="main">
-  <h1>Solicitação de Mudança de Horário</h1>
+  <h1>Mudanças de Horário</h1>
 
-  <form>
-    <label>Professor:</label><br>
-    <input type="text" placeholder="Nome do professor"><br><br>
+  <ul id="mudancaList"></ul>
 
-    <label>Disciplina:</label><br>
-    <input type="text" placeholder="Disciplina"><br><br>
-
-    <label>Data atual:</label><br>
-    <input type="date"><br><br>
-
-    <label>Nova data:</label><br>
-    <input type="date"><br><br>
-
-    <button type="submit">Solicitar Mudança</button>
+  <h3>Registrar mudança:</h3>
+  <form id="mudanca-Form">
+    <input type="text" placeholder="Motivo da mudança" id="motivo-Mudanca" required><br><br>
+    <input type="date" id="data-Mudanca" required><br><br>
+    <textarea placeholder="Descrição detalhada" id="desc-Mudanca"></textarea><br><br>
+    <button type="submit">Registrar</button>
   </form>
 </div>
 
 </body>
+
+<script>
+  function renderMudanca() {
+    const mudancaList = document.getElementById("mudancaList");
+    mudancaList.innerHTML = "";
+    const mudancas = JSON.parse(localStorage.getItem("MudancasHorario") || "[]");
+    mudancas.forEach(ev => {
+      mudancaList.innerHTML += `<li><strong>${ev.data}:</strong> ${ev.motivo}<br>${ev.desc}</li>`;
+    });
+  }
+
+  function saveMudanca(e) {
+    e.preventDefault();
+    const motivo = document.getElementById("motivo-Mudanca").value.trim();
+    const data = document.getElementById("data-Mudanca").value;
+    const desc = document.getElementById("desc-Mudanca").value.trim();
+    if (!motivo || !data) return;
+
+    const [ano, mes, dia] = data.split("-");
+    const dataFormatada = `${dia}/${mes}/${ano}`;
+
+    const mudancas = JSON.parse(localStorage.getItem("MudancasHorario") || "[]");
+    mudancas.push({ motivo, data: dataFormatada, desc });
+    localStorage.setItem("MudancasHorario", JSON.stringify(mudancas));
+
+    renderMudanca();
+    document.getElementById("mudanca-Form").reset();
+  }
+
+  document.getElementById("mudanca-Form").addEventListener("submit", saveMudanca);
+
+  renderMudanca();
+</script>
+
 </html>
