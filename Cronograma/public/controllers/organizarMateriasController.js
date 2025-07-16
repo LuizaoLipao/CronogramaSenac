@@ -77,16 +77,19 @@ for (let dia = 0; dia < dias.length; dia++) {
 }
 
 // Monta o HTML da tabela
-let html = '<table class="grade-horario"><thead><tr><th>Aula</th>';
+let html = `<table class="grade-horario"><thead><tr><th>Aula</th>`;
 dias.forEach(dia => html += `<th>${dia}</th>`);
-html += '</tr></thead><tbody>';
+html += `</tr></thead><tbody>`;
 
 for (let aula = 0; aula < aulasPorDia; aula++) {
     html += `<tr><td>${aula + 1}ª Aula</td>`;
     for (let dia = 0; dia < dias.length; dia++) {
         const materia = grade[aula][dia];
         if (materia) {
-            html += `<td class="celula" style="background-color: ${materia.Cor};">${materia.Materia}</td>`;
+          const id = `${materia.Materia}-${aula}-${dia}`;
+          const aulaHorario = `${aula + 1}ª Aula`;
+          html += `<td class="celula" style="background-color: ${materia.Cor};" onclick="abrirObservacao('${id}', '${materia.Materia}', '${dias[dia]}', '${aulaHorario}')">${materia.Materia}</td>`;
+
         } else {
             html += `<td class="celula"></td>`;
         }
